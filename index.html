@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Young Hearts - Community Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            width: 100vw;
+            background: url('assets/img/poster.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* OVERLAY - LIGERAMENTE MÁS OSCURO PARA MEJOR LEGIBILIDAD */
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); /* Aumentado de 0.7 a 0.75 */
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+
+        /* CONTAINER */
+        .hub-container {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto;
+            padding: 3rem 1.5rem; /* Reducido padding en móvil */
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .hub-header { 
+            text-align: center; 
+            margin-bottom: 2.5rem; 
+            width: 100%;
+        }
+        .hub-logo { 
+            max-width: 350px; 
+            width: 100%; 
+            filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); 
+            margin-bottom: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        .hub-logo:hover {
+            transform: scale(1.02);
+        }
+        .hub-tagline { 
+            font-weight: 300; 
+            letter-spacing: 0.1em; 
+            opacity: 0.9; 
+            font-size: 0.9rem; 
+            text-transform: uppercase;
+            color: rgba(255, 215, 0, 0.8); /* Color dorado suave */
+        }
+
+        /* BENTO GRID */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        /* CARDS */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de brillo sutil en hover */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .card.featured {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.4));
+            border-color: rgba(255, 215, 0, 0.3);
+            grid-column: span 1;
+            position: relative;
+        }
+        
+        /* Efecto especial para la carta destacada */
+        .card.featured::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFD700, transparent, #FFD700);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card.featured:hover::before {
+            opacity: 0.3;
+        }
+        
+        .card.featured:hover { 
+            border-color: #FFD700;
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.15);
+        }
+
+        /* TEXT */
+        .card-title { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            margin-bottom: 0.5rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            color: #fff;
+        }
+        
+        .card-desc { 
+            font-size: 0.85rem; 
+            color: rgba(255,255,255,0.7); /* Aumentado contraste */
+            margin-bottom: 1.5rem; 
+            line-height: 1.5; 
+            flex-grow: 1; 
+        }
+        
+        /* BUTTONS BASE */
+        .btn {
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 0.5rem;
+            width: 100%; 
+            padding: 0.85rem; /* Aumentado para mejor touch */
+            border-radius: 10px; /* Bordes más redondeados */
+            font-size: 0.85rem; 
+            font-weight: 500; 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            margin-top: 0.5rem; 
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de ripple para botones */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
+        }
+
+        /* PRIMARY & OUTLINE GENERIC */
+        .btn-primary { 
+            background: linear-gradient(135deg, #FFD700, #FFA500); /* Gradiente dorado */
+            color: #000; 
+            font-weight: 700; 
+            border: none; 
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #FFE55C, #FFB347); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-outline { 
+            background: transparent; 
+            border-color: rgba(255,255,255,0.3); 
+            color: #fff; 
+        }
+        .btn-outline:hover { 
+            background: #fff; 
+            color: #000; 
+            border-color: #fff; 
+            transform: translateY(-2px);
+        }
+
+        /* BRAND BUTTONS (NUEVOS ESTILOS PARA ILUMINARSE) */
+        .btn-spotify { 
+            background: rgba(29, 185, 84, 0.1); 
+            border-color: #1DB954; 
+            color: #1DB954; 
+        }
+        .btn-spotify:hover { 
+            background: #1DB954; 
+            color: #fff; 
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-apple { 
+            background: rgba(250, 36, 60, 0.1); 
+            border-color: #FA243C; 
+            color: #FA243C; 
+        }
+        .btn-apple:hover { 
+            background: #FA243C; 
+            color: #fff; 
+            box-shadow: 0 6px 20px rgba(250, 36, 60, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-discord { 
+            background: rgba(88, 101, 242, 0.1); 
+            border-color: #5865F2; 
+            color: #5865F2; 
+        }
+        .btn-discord:hover { 
+            background: #5865F2; 
+            color: #fff; 
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-reddit { 
+            background: rgba(255, 69, 0, 0.1); 
+            border-color: #FF4500; 
+            color: #FF4500; 
+        }
+        .btn-reddit:hover { 
+            background: #FF4500; 
+            color: #fff; 
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+
+        /* LINK LIST WITH SCROLL */
+        .link-list { 
+            list-style: none; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.5rem; 
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .link-list::-webkit-scrollbar { width: 4px; }
+        .link-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .link-list::-webkit-scrollbar-thumb { 
+            background: rgba(255,255,255,0.3); 
+            border-radius: 2px; 
+            transition: background 0.3s;
+        }
+        
+        .link-list::-webkit-scrollbar-thumb:hover { 
+            background: rgba(255, 215, 0, 0.5); 
+        }
+
+        .link-item {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 0.85rem; /* Aumentado padding para mejor touch */
+            background: rgba(0,0,0,0.2); 
+            border-radius: 10px; /* Bordes más redondeados */
+            text-decoration: none; 
+            color: rgba(255,255,255,0.9); /* Mejor contraste */
+            font-size: 0.85rem;
+            transition: all 0.3s; 
+            flex-shrink: 0;
+            border: 1px solid transparent;
+        }
+        
+        .link-item:hover { 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            padding-left: 1.2rem;
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(3px);
+        }
+        
+        .link-item i { 
+            color: #FFD700; 
+            transition: transform 0.3s;
+        }
+        
+        .link-item:hover i {
+            transform: scale(1.2);
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 3rem; 
+            text-align: center; 
+            font-size: 0.75rem; 
+            color: rgba(255,255,255,0.5);
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 2rem; 
+            width: 100%;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: auto; /* Empuja el footer hacia abajo */
+        }
+        
+        .footer a { 
+            color: rgba(255, 215, 0, 0.8); /* Color dorado para enlaces */
+            text-decoration: none; 
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover { 
+            color: #FFD700; 
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE IMPROVEMENTS */
+        @media (min-width: 768px) {
+            .bento-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            
+            .hub-container {
+                padding: 4rem 2rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .bento-grid { 
+                grid-template-columns: repeat(3, 1fr); 
+            }
+            
+            .card.featured { 
+                grid-row: span 2; 
+            }
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 767px) {
+            .hub-container {
+                padding: 2rem 1rem;
+            }
+            
+            .hub-logo {
+                max-width: 280px;
+            }
+            
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .card.featured {
+                order: -1; /* Mover la carta featured al principio */
+            }
+            
+            .link-list {
+                max-height: 250px; /* Reducir altura en móvil */
+            }
+            
+            .btn {
+                padding: 0.9rem; /* Botones más grandes en móvil */
+                min-height: 48px; /* Tamaño mínimo para touch */
+            }
+            
+            .link-item {
+                padding: 0.9rem;
+                min-height: 44px; /* Tamaño mínimo para touch */
+            }
+            
+            .footer {
+                margin-top: 2rem;
+                padding: 1.2rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* SCROLL SMOOTH */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* LOADING ANIMATION */
+        .hub-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PULSE ANIMATION FOR FEATURED CARD */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+
+        .card.featured {
+            animation: pulse-glow 3s infinite;
+        }
+
+        /* HOVER EFFECTS FOR CARDS */
+        .card {
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hub-container">
+        
+        <div class="hub-header">
+            <img src="assets/logo.png" alt="Young Hearts" class="hub-logo">
+            <p class="hub-tagline">Unofficial Community Hub</p>
+        </div>
+
+        <div class="bento-grid">
+
+            <div class="card featured">
+                <div>
+                    <h2 class="card-title" style="color: #FFD700; font-size: 1.5rem;"><i class="fas fa-star"></i> THE ARCHIVE</h2>
+                    <p class="card-desc" style="font-size: 1rem; margin-top: 1rem;">
+                        Enter the immersive digital museum. Explore deleted scenes, exclusive interviews, fan art gallery, and the interactive experience.
+                    </p>
+                </div>
+                <a href="experience.html" class="btn btn-primary">
+                    ENTER THE ARCHIVE <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-shopping-cart"></i> Watch & Support</h3>
+                    <p class="card-desc">Support the official release. Available globally.</p>
+                </div>
+                <a href="https://www.amazon.co.uk/Young-Hearts-Blu-ray-Lou-Goossens/dp/B0FMS7NWJ2" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-amazon"></i> Buy Blu-ray
+                </a>
+                <a href="https://tv.apple.com/us/movie/corazones-jovenes/umc.cmc.77z7itlyucy9x4fxm4obk1r04" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-apple"></i> Apple TV
+                </a>
+                <a href="https://www.primevideo.com/dp/amzn1.dv.gti.27236b26-db83-4e26-befa-76b1016adc6d" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-amazon"></i> Prime Video
+                </a>
+                <a href="https://www.youtube.com/watch?v=gH0wDYNpWJM" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-youtube"></i> Watch on YouTube
+                </a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-users"></i> Community Voices</h3>
+                    <p class="card-desc">Follow the creators keeping the fandom alive.</p>
+                </div>
+                <div class="link-list">
+                    <a href="https://instagram.com/frogsumms_" target="_blank" class="link-item">frogsumms_ <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/marveylol" target="_blank" class="link-item">marveylol <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/sinaaslipp" target="_blank" class="link-item">sinaaslipp <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/yhxdaya" target="_blank" class="link-item">yhxdaya <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/youngheartsfans24" target="_blank" class="link-item">youngheartsfans24 <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/youngheartscharlie" target="_blank" class="link-item">youngheartscharlie <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/sebscamp93" target="_blank" class="link-item">sebscamp93 <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/canvas0ne" target="_blank" class="link-item">canvas0ne <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/joyousdraws11" target="_blank" class="link-item">joyousdraws11 <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/youngheartsbts" target="_blank" class="link-item">youngheartsbts <i class="fab fa-instagram"></i></a>
+                    <a href="https://instagram.com/justaghosthere_" target="_blank" class="link-item" style="border-left: 2px solid #FFD700; margin-top: 0.5rem;">
+                        justaghosthere_ (Curator) <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-film"></i> Cast & Crew</h3>
+                    <p class="card-desc">Connect with the talent behind the film.</p>
+                </div>
+                <div class="link-list">
+                    <a href="https://www.instagram.com/young_hearts_film/" target="_blank" class="link-item" style="color: #FFD700; border: 1px solid rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); font-weight: 600;">
+                        Young Hearts (Official) <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.instagram.com/anthonyschatteman/" target="_blank" class="link-item">Anthony Schatteman <i class="fas fa-video"></i></a>
+                    <a href="https://www.instagram.com/lou__goossens/" target="_blank" class="link-item">Lou Goossens <i class="fas fa-user"></i></a>
+                    <a href="https://www.instagram.com/marius.desaeger/" target="_blank" class="link-item">Marius De Saeger <i class="fas fa-user"></i></a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-comments"></i> Join the Discussion</h3>
+                    <p class="card-desc">Connect with other fans, share theories, and discuss the film.</p>
+                </div>
+                <a href="https://discord.gg/younghearts" target="_blank" class="btn btn-discord">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+                <a href="https://www.reddit.com/r/younghearts/" target="_blank" class="btn btn-reddit">
+                    <i class="fab fa-reddit"></i> Visit Reddit
+                </a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-music"></i> Soundtrack</h3>
+                    <p class="card-desc">Listen to the emotional score by Ruben de Gheselle.</p>
+                </div>
+                <a href="https://open.spotify.com/intl-es/album/2jSdTyNPdJDbxe9UdyFuwd?si=e610cc71977c42ed" target="_blank" class="btn btn-spotify">
+                    <i class="fab fa-spotify"></i> Listen on Spotify
+                </a>
+                <a href="https://music.apple.com/us/album/young-hearts-original-motion-picture-soundtrack/1784802818" target="_blank" class="btn btn-apple">
+                    <i class="fab fa-apple"></i> Listen on Apple Music
+                </a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3 class="card-title"><i class="fas fa-star-half-alt"></i> Reviews</h3>
+                    <p class="card-desc">See what the world is saying about Young Hearts.</p>
+                </div>
+                <a href="https://letterboxd.com/film/young-hearts-2024/" target="_blank" class="btn btn-outline" style="border-color: #40bcf4; color: #40bcf4;">
+                    <i class="fas fa-circle"></i> Letterboxd
+                </a>
+                 <a href="https://www.imdb.com/title/tt27492164/" target="_blank" class="btn btn-outline" style="border-color: #f5c518; color: #f5c518;">
+                    <i class="fab fa-imdb"></i> IMDb
+                </a>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <p>Young Hearts Community Hub & Fan Edition developed by <a href="https://instagram.com/justaghosthere_">@justaghosthere_</a></p>
+            <p style="margin-top: 0.5rem; color: rgba(255,255,255,0.6);">Non-profit fan project. All rights belong to original creators.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

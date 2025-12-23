@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Art Gallery - Young Hearts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            background: #000;
+            overflow-x: hidden;
+        }
+
+        /* FONDO BLUREADO */
+        .bg-fixed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('assets/img/poster.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(15px) brightness(0.4); 
+            z-index: -1;
+            transform: scale(1.1); 
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1;
+        }
+
+        /* HEADER & NAV */
+        .gallery-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 1rem;
+        }
+        .gallery-title { font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; font-size: 1.5rem; }
+        .back-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; padding: 0.5rem 1.5rem; text-decoration: none;
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { background: #fff; color: #000; }
+
+        /* ANIMATIC VIDEO SECTION */
+        .animatic-section {
+            margin-bottom: 4rem; background: rgba(0,0,0,0.3); padding: 1rem;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-label { font-size: 0.9rem; color: #FFD700; margin-bottom: 1rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        
+        /* Link en el titulo del video */
+        .section-label a { color: #FFD700; text-decoration: underline; font-weight: 600; }
+        .section-label a:hover { color: #fff; }
+
+        .video-responsive { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-responsive iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* ARTIST SECTION */
+        .artist-section { margin-bottom: 4rem; }
+        .artist-header {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;
+        }
+        .artist-name-title { font-size: 1.2rem; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+        .artist-social {
+            color: #FFD700; text-decoration: none; font-size: 0.9rem;
+            border: 1px solid rgba(255, 215, 0, 0.3); padding: 0.2rem 0.8rem; border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .artist-social:hover { background: #FFD700; color: #000; }
+
+        /* ART GRID */
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* ART CARD */
+        .art-card {
+            background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .art-card:hover {
+            transform: translateY(-5px); background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); border-color: #FFD700;
+        }
+        .art-img { width: 100%; height: 250px; object-fit: cover; border-radius: 4px; display: block; }
+
+        /* SUBMIT CARD */
+        .art-card.special-invite:hover div {
+            background: rgba(255, 215, 0, 0.15) !important;
+            border-color: #FFD700 !important; transform: scale(1.02);
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000;
+            justify-content: center; align-items: center; flex-direction: column;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .lightbox.active { display: flex; opacity: 1; }
+        .lightbox-img { max-width: 90%; max-height: 80vh; box-shadow: 0 0 30px rgba(0,0,0,0.5); border: 2px solid #333; }
+        .lightbox-caption { margin-top: 1rem; color: #FFD700; font-size: 1.2rem; letter-spacing: 0.1em; }
+        .close-lightbox {
+            position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2rem;
+            cursor: pointer; background: none; border: none; transition: color 0.3s;
+        }
+        .close-lightbox:hover { color: #FFD700; }
+
+        .footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-fixed"></div>
+
+    <div class="container">
+        
+        <header class="gallery-header">
+            <h1 class="gallery-title">Fan Art Gallery</h1>
+            <a href="experience.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+        </header>
+
+        <section class="animatic-section">
+            <div class="section-label">
+                <i class="fas fa-video"></i> Fan Animatic by <a href="https://instagram.com/joyousdraws11" target="_blank">@joyousdraws11</a>
+            </div>
+            <div class="video-responsive">
+                <iframe 
+                    src="https://www.youtube.com/embed/rXUE5Md5xHw" 
+                    title="Young Hearts Animatic" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Marc the Shy Pannenkoekje</div>
+                <a href="https://instagram.com/marveylol" target="_blank" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/marc/marc1.jpg', 'Marc the Shy Pannenkoekje')"><img src="assets/img/gallery/marc/marc1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/marc/marc2.jpg', 'Marc the Shy Pannenkoekje')"><img src="assets/img/gallery/marc/marc2.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Suzie</div>
+                <a href="https://instagram.com/joyousdraws11" target="_blank" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/suzie/suzie1.jpg', 'Suzie')"><img src="assets/img/gallery/suzie/suzie1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/suzie/suzie2.jpg', 'Suzie')"><img src="assets/img/gallery/suzie/suzie2.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Luka Marteau-Kerivel</div>
+                <a href="#" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/luka/luka1.jpg', 'Luka Marteau-Kerivel')"><img src="assets/img/gallery/luka/luka1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/luka/luka2.jpg', 'Luka Marteau-Kerivel')"><img src="assets/img/gallery/luka/luka2.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/luka/luka3.jpg', 'Luka Marteau-Kerivel')"><img src="assets/img/gallery/luka/luka3.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title"><i class="fas fa-handshake"></i> Collaborations</div>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/suzie/suzie3.jpg', 'Suzie & Luka Collaboration')">
+                    <img src="assets/img/gallery/suzie/suzie3.jpg" class="art-img">
+                    <div style="text-align:center; font-size:0.8rem; margin-top:5px; color:#FFD700;">Suzie x Luka</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Ronnie Hubbard</div>
+                <a href="#" target="_blank" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/ronnie/ronnie1.jpg', 'Ronnie Hubbard')"><img src="assets/img/gallery/ronnie/ronnie1.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">seTh</div>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth1.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth2.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth2.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth3.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth3.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth4.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth4.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth5.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth5.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth6.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth6.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/seth/seth7.jpg', 'seTh')"><img src="assets/img/gallery/seth/seth7.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Nana</div>
+                <a href="https://instagram.com/nanatriestodraw" target="_blank" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana1.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana2.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana2.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana3.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana3.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana4.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana4.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana5.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana5.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana6.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana6.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana7.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana7.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/nana/nana8.jpg', 'Nana')"><img src="assets/img/gallery/nana/nana8.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header">
+                <div class="artist-name-title">Kauan.Rosart</div>
+                <a href="https://instagram.com/kauan.rosart" target="_blank" class="artist-social"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="art-grid">
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/kauan/kauan1.jpg', 'Kauan.Rosart')"><img src="assets/img/gallery/kauan/kauan1.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/kauan/kauan2.jpg', 'Kauan.Rosart')"><img src="assets/img/gallery/kauan/kauan2.jpg" class="art-img"></div>
+                <div class="art-card" onclick="openLightbox('assets/img/gallery/kauan/kauan3.jpg', 'Kauan.Rosart')"><img src="assets/img/gallery/kauan/kauan3.jpg" class="art-img"></div>
+            </div>
+        </div>
+
+        <div class="artist-section">
+            <div class="artist-header"><div class="artist-name-title">You?</div></div>
+            <div class="art-grid">
+                <div class="art-card special-invite" onclick="window.open('https://instagram.com/justaghosthere_', '_blank')">
+                    <div style="height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255, 215, 0, 0.05); border: 2px dashed rgba(255, 215, 0, 0.3); border-radius: 4px; transition: all 0.3s;">
+                        <i class="fas fa-plus-circle" style="font-size: 3rem; color: #FFD700; margin-bottom: 1rem;"></i>
+                        <span style="color: #FFD700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem; font-weight: 600;">Submit Your Art</span>
+                        <span style="color: rgba(255,255,255,0.5); font-size: 0.7rem; margin-top: 0.5rem;">DM to participate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            Young Hearts Fan Art Gallery - Curated by justaghosthere_
+        </footer>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="close-lightbox">&times;</button>
+        <img src="" alt="Full size" class="lightbox-img" id="lightboxImg">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <script>
+        function openLightbox(imageSrc, artistName) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            const caption = document.getElementById('lightboxCaption');
+            img.src = imageSrc;
+            caption.innerText = artistName;
+            lightbox.classList.add('active');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
