@@ -19,10 +19,10 @@
             overflow-x: hidden;
         }
 
-        /* OVERLAY - LIGERAMENTE MÁS OSCURO PARA MEJOR LEGIBILIDAD */
+        /* OVERLAY */
         body::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); /* Aumentado de 0.7 a 0.75 */
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(5px);
             z-index: 0;
         }
@@ -31,7 +31,7 @@
         .hub-container {
             position: relative; z-index: 1;
             max-width: 1200px; margin: 0 auto;
-            padding: 3rem 1.5rem; /* Reducido padding en móvil */
+            padding: 3rem 1.5rem;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
         }
@@ -58,7 +58,7 @@
             opacity: 0.9; 
             font-size: 0.9rem; 
             text-transform: uppercase;
-            color: rgba(255, 215, 0, 0.8); /* Color dorado suave */
+            color: rgba(255, 215, 0, 0.8);
         }
 
         /* BENTO GRID */
@@ -85,23 +85,14 @@
             overflow: hidden;
         }
 
-        /* Efecto de brillo sutil en hover */
         .card::after {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            opacity: 0; transition: opacity 0.3s ease;
         }
-
-        .card:hover::after {
-            opacity: 1;
-        }
-
+        .card:hover::after { opacity: 1; }
+        
         .card:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.08);
@@ -116,25 +107,12 @@
             position: relative;
         }
         
-        /* Efecto especial para la carta destacada */
         .card.featured::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
             background: linear-gradient(45deg, #FFD700, transparent, #FFD700);
-            border-radius: 18px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            border-radius: 18px; z-index: -1; opacity: 0; transition: opacity 0.3s ease;
         }
-        
-        .card.featured:hover::before {
-            opacity: 0.3;
-        }
-        
+        .card.featured:hover::before { opacity: 0.3; }
         .card.featured:hover { 
             border-color: #FFD700;
             box-shadow: 0 15px 35px rgba(255, 215, 0, 0.15);
@@ -142,341 +120,148 @@
 
         /* TEXT */
         .card-title { 
-            font-size: 1.1rem; 
-            font-weight: 600; 
-            margin-bottom: 0.5rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem;
-            color: #fff;
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; 
+            display: flex; align-items: center; gap: 0.5rem; color: #fff;
         }
-        
         .card-desc { 
-            font-size: 0.85rem; 
-            color: rgba(255,255,255,0.7); /* Aumentado contraste */
-            margin-bottom: 1.5rem; 
-            line-height: 1.5; 
-            flex-grow: 1; 
+            font-size: 0.85rem; color: rgba(255,255,255,0.7); 
+            margin-bottom: 1.5rem; line-height: 1.5; flex-grow: 1; 
         }
         
         /* BUTTONS BASE */
         .btn {
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 0.5rem;
-            width: 100%; 
-            padding: 0.85rem; /* Aumentado para mejor touch */
-            border-radius: 10px; /* Bordes más redondeados */
-            font-size: 0.85rem; 
-            font-weight: 500; 
-            text-decoration: none; 
-            text-transform: uppercase; 
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease; 
-            cursor: pointer; 
-            margin-top: 0.5rem; 
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            width: 100%; padding: 0.85rem; border-radius: 10px;
+            font-size: 0.85rem; font-weight: 500; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            transition: all 0.3s ease; cursor: pointer; margin-top: 0.5rem;
+            border: 1px solid transparent; position: relative; overflow: hidden;
         }
 
-        /* Efecto de ripple para botones */
         .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
+            content: ''; position: absolute; top: 50%; left: 50%; width: 5px; height: 5px;
+            background: rgba(255, 255, 255, 0.5); opacity: 0; border-radius: 100%;
+            transform: scale(1, 1) translate(-50%); transform-origin: 50% 50%;
         }
-
-        .btn:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
+        .btn:focus:not(:active)::after { animation: ripple 1s ease-out; }
 
         @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(40, 40);
-                opacity: 0;
-            }
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            100% { transform: scale(40, 40); opacity: 0; }
         }
 
-        /* PRIMARY & OUTLINE GENERIC */
+        /* BUTTON VARIANTS */
         .btn-primary { 
-            background: linear-gradient(135deg, #FFD700, #FFA500); /* Gradiente dorado */
-            color: #000; 
-            font-weight: 700; 
-            border: none; 
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+            background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; 
+            font-weight: 700; border: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
         }
         .btn-primary:hover { 
             background: linear-gradient(135deg, #FFE55C, #FFB347); 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
         }
         
         .btn-outline { 
-            background: transparent; 
-            border-color: rgba(255,255,255,0.3); 
-            color: #fff; 
+            background: transparent; border-color: rgba(255,255,255,0.3); color: #fff; 
         }
         .btn-outline:hover { 
-            background: #fff; 
-            color: #000; 
-            border-color: #fff; 
+            background: #fff; color: #000; border-color: #fff; transform: translateY(-2px);
+        }
+
+        /* BRAND BUTTONS */
+        .btn-spotify { background: rgba(29, 185, 84, 0.1); border-color: #1DB954; color: #1DB954; }
+        .btn-spotify:hover { background: #1DB954; color: #fff; box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4); transform: translateY(-2px); }
+
+        .btn-apple { background: rgba(250, 36, 60, 0.1); border-color: #FA243C; color: #FA243C; }
+        .btn-apple:hover { background: #FA243C; color: #fff; box-shadow: 0 6px 20px rgba(250, 36, 60, 0.4); transform: translateY(-2px); }
+
+        .btn-discord { background: rgba(88, 101, 242, 0.1); border-color: #5865F2; color: #5865F2; }
+        .btn-discord:hover { background: #5865F2; color: #fff; box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4); transform: translateY(-2px); }
+
+        .btn-reddit { background: rgba(255, 69, 0, 0.1); border-color: #FF4500; color: #FF4500; }
+        .btn-reddit:hover { background: #FF4500; color: #fff; box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4); transform: translateY(-2px); }
+
+        /* NUEVO: JUSTWATCH BUTTON */
+        .btn-justwatch { 
+            background: rgba(251, 197, 0, 0.1); /* Fondo sutil dorado */
+            border-color: #fbc500; /* Color oficial JustWatch */
+            color: #fbc500; 
+            font-weight: 600;
+        }
+        .btn-justwatch:hover { 
+            background: #fbc500; 
+            color: #000; /* Texto negro sobre fondo amarillo como su logo */
+            box-shadow: 0 6px 20px rgba(251, 197, 0, 0.4); 
             transform: translateY(-2px);
         }
 
-        /* BRAND BUTTONS (NUEVOS ESTILOS PARA ILUMINARSE) */
-        .btn-spotify { 
-            background: rgba(29, 185, 84, 0.1); 
-            border-color: #1DB954; 
-            color: #1DB954; 
-        }
-        .btn-spotify:hover { 
-            background: #1DB954; 
-            color: #fff; 
-            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-apple { 
-            background: rgba(250, 36, 60, 0.1); 
-            border-color: #FA243C; 
-            color: #FA243C; 
-        }
-        .btn-apple:hover { 
-            background: #FA243C; 
-            color: #fff; 
-            box-shadow: 0 6px 20px rgba(250, 36, 60, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-discord { 
-            background: rgba(88, 101, 242, 0.1); 
-            border-color: #5865F2; 
-            color: #5865F2; 
-        }
-        .btn-discord:hover { 
-            background: #5865F2; 
-            color: #fff; 
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-reddit { 
-            background: rgba(255, 69, 0, 0.1); 
-            border-color: #FF4500; 
-            color: #FF4500; 
-        }
-        .btn-reddit:hover { 
-            background: #FF4500; 
-            color: #fff; 
-            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
-            transform: translateY(-2px);
-        }
-
-
-        /* LINK LIST WITH SCROLL */
+        /* LINK LIST */
         .link-list { 
-            list-style: none; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 0.5rem; 
-            max-height: 350px;
-            overflow-y: auto;
-            padding-right: 5px;
+            list-style: none; display: flex; flex-direction: column; gap: 0.5rem; 
+            max-height: 350px; overflow-y: auto; padding-right: 5px;
         }
-        
         .link-list::-webkit-scrollbar { width: 4px; }
         .link-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .link-list::-webkit-scrollbar-thumb { 
-            background: rgba(255,255,255,0.3); 
-            border-radius: 2px; 
-            transition: background 0.3s;
-        }
-        
-        .link-list::-webkit-scrollbar-thumb:hover { 
-            background: rgba(255, 215, 0, 0.5); 
-        }
+        .link-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; transition: background 0.3s; }
+        .link-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 215, 0, 0.5); }
 
         .link-item {
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            padding: 0.85rem; /* Aumentado padding para mejor touch */
-            background: rgba(0,0,0,0.2); 
-            border-radius: 10px; /* Bordes más redondeados */
-            text-decoration: none; 
-            color: rgba(255,255,255,0.9); /* Mejor contraste */
-            font-size: 0.85rem;
-            transition: all 0.3s; 
-            flex-shrink: 0;
-            border: 1px solid transparent;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.85rem; background: rgba(0,0,0,0.2); border-radius: 10px;
+            text-decoration: none; color: rgba(255,255,255,0.9); font-size: 0.85rem;
+            transition: all 0.3s; flex-shrink: 0; border: 1px solid transparent;
         }
-        
         .link-item:hover { 
-            background: rgba(255,255,255,0.1); 
-            color: #fff; 
-            padding-left: 1.2rem;
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(3px);
+            background: rgba(255,255,255,0.1); color: #fff; padding-left: 1.2rem;
+            border-color: rgba(255, 255, 255, 0.1); transform: translateX(3px);
         }
-        
-        .link-item i { 
-            color: #FFD700; 
-            transition: transform 0.3s;
-        }
-        
-        .link-item:hover i {
-            transform: scale(1.2);
-        }
+        .link-item i { color: #FFD700; transition: transform 0.3s; }
+        .link-item:hover i { transform: scale(1.2); }
 
         /* FOOTER */
         .footer {
-            margin-top: 3rem; 
-            text-align: center; 
-            font-size: 0.75rem; 
-            color: rgba(255,255,255,0.5);
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            padding-top: 2rem; 
-            width: 100%;
-            backdrop-filter: blur(5px);
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: auto; /* Empuja el footer hacia abajo */
+            margin-top: 3rem; text-align: center; font-size: 0.75rem; 
+            color: rgba(255,255,255,0.5); border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 2rem; width: 100%; backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 1.5rem;
+            margin-top: auto;
         }
-        
-        .footer a { 
-            color: rgba(255, 215, 0, 0.8); /* Color dorado para enlaces */
-            text-decoration: none; 
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .footer a:hover { 
-            color: #FFD700; 
-            text-decoration: underline;
-        }
+        .footer a { color: rgba(255, 215, 0, 0.8); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .footer a:hover { color: #FFD700; text-decoration: underline; }
 
-        /* RESPONSIVE IMPROVEMENTS */
+        /* RESPONSIVE */
         @media (min-width: 768px) {
-            .bento-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            }
-            
-            .hub-container {
-                padding: 4rem 2rem;
-            }
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .hub-container { padding: 4rem 2rem; }
         }
-        
         @media (min-width: 1024px) {
-            .bento-grid { 
-                grid-template-columns: repeat(3, 1fr); 
-            }
-            
-            .card.featured { 
-                grid-row: span 2; 
-            }
+            .bento-grid { grid-template-columns: repeat(3, 1fr); }
+            .card.featured { grid-row: span 2; }
         }
-
-        /* MOBILE OPTIMIZATIONS */
         @media (max-width: 767px) {
-            .hub-container {
-                padding: 2rem 1rem;
-            }
-            
-            .hub-logo {
-                max-width: 280px;
-            }
-            
-            .bento-grid {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            
-            .card {
-                padding: 1.5rem;
-            }
-            
-            .card.featured {
-                order: -1; /* Mover la carta featured al principio */
-            }
-            
-            .link-list {
-                max-height: 250px; /* Reducir altura en móvil */
-            }
-            
-            .btn {
-                padding: 0.9rem; /* Botones más grandes en móvil */
-                min-height: 48px; /* Tamaño mínimo para touch */
-            }
-            
-            .link-item {
-                padding: 0.9rem;
-                min-height: 44px; /* Tamaño mínimo para touch */
-            }
-            
-            .footer {
-                margin-top: 2rem;
-                padding: 1.2rem;
-                font-size: 0.7rem;
-            }
+            .hub-container { padding: 2rem 1rem; }
+            .hub-logo { max-width: 280px; }
+            .bento-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .card { padding: 1.5rem; }
+            .card.featured { order: -1; }
+            .link-list { max-height: 250px; }
+            .btn, .link-item { padding: 0.9rem; min-height: 48px; }
+            .footer { margin-top: 2rem; padding: 1.2rem; font-size: 0.7rem; }
         }
 
-        /* SCROLL SMOOTH */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* LOADING ANIMATION */
-        .hub-container {
-            animation: fadeIn 0.8s ease-out;
-        }
-
+        /* ANIMATIONS */
+        html { scroll-behavior: smooth; }
+        .hub-container { animation: fadeIn 0.8s ease-out; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        /* PULSE ANIMATION FOR FEATURED CARD */
         @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
         }
-
-        .card.featured {
-            animation: pulse-glow 3s infinite;
-        }
-
-        /* HOVER EFFECTS FOR CARDS */
-        .card {
-            will-change: transform;
-        }
+        .card.featured { animation: pulse-glow 3s infinite; }
+        .card { will-change: transform; }
     </style>
 </head>
 <body>
@@ -505,8 +290,13 @@
             <div class="card">
                 <div>
                     <h3 class="card-title"><i class="fas fa-shopping-cart"></i> Watch & Support</h3>
-                    <p class="card-desc">Support the official release. Available globally.</p>
+                    <p class="card-desc">Find where to stream or buy the film in your country.</p>
                 </div>
+                
+                <a href="https://www.justwatch.com/us/movie/young-hearts-2024" target="_blank" class="btn btn-justwatch">
+                    <i class="fas fa-tv"></i> Check Availability (JustWatch)
+                </a>
+
                 <a href="https://www.amazon.co.uk/Young-Hearts-Blu-ray-Lou-Goossens/dp/B0FMS7NWJ2" target="_blank" class="btn btn-outline">
                     <i class="fab fa-amazon"></i> Buy Blu-ray
                 </a>
@@ -607,6 +397,4 @@
     </div>
 
 </body>
-
 </html>
-
